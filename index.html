@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Oracle of the Bench — SCOTUS AI Forecasting</title>
+<!--
+╔══════════════════════════════════════════════════════════════╗
+║              🦅  EASTER EGG #0: SOURCE HUNTER  🦅           ║
+║  "The advancement & diffusion of knowledge is the only      ║
+║   guardian of true liberty." — James Madison                ║
+║                                                              ║
+║  Type  M-A-D-I-S-O-N  anywhere on the page for +50 pts!    ║
+╚══════════════════════════════════════════════════════════════╝
+-->
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --parch:#f5e6c8; --parch-dk:#e8d5a3; --parch-dkr:#d4bc7c;
+  --ink:#1a0e00; --ink-lt:#3d2b1f;
+  --red:#8b1a1a; --red-lt:#c43030;
+  --gold:#c9a84c; --gold-lt:#e4c87a;
+  --navy:#1a2744; --navy-lt:#2a3f6f;
+  --green:#2d5016; --green-lt:#4a8a28;
+  --border:#8b6914; --shadow:rgba(26,14,0,.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'IM Fell English',Georgia,serif;background:var(--parch);color:var(--ink);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 15%,rgba(160,120,40,.18) 0%,transparent 55%),radial-gradient(ellipse at 85% 85%,rgba(140,100,30,.15) 0%,transparent 55%),radial-gradient(ellipse at 50% 50%,transparent 35%,rgba(80,50,10,.1) 100%);pointer-events:none;z-index:0}
+body>*{position:relative;z-index:1}
+h1,h2,h3,h4{font-family:'Cinzel',serif;line-height:1.3}
+a{color:var(--red);text-decoration:underline dotted}
+a:hover{color:var(--gold)}
+.container{max-width:1180px;margin:0 auto;padding:0 1.5rem}
+.section{padding:5rem 0}
+.section-alt{background:rgba(26,39,68,.04)}
+
+/* Ornamental divider */
+.divider{text-align:center;margin:2.5rem 0;color:var(--gold);font-size:1.2rem;letter-spacing:.5rem;display:flex;align-items:center;gap:1rem}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+
+/* Colonial double-rule box */
+.colonial-box{border:3px double var(--border);padding:1.5rem;position:relative;background:rgba(245,230,200,.6)}
+.colonial-box::before{content:'✦';position:absolute;top:-10px;left:8px;background:var(--parch);padding:0 4px;color:var(--gold);font-size:.8rem}
+.colonial-box::after{content:'✦';position:absolute;top:-10px;right:8px;background:var(--parch);padding:0 4px;color:var(--gold);font-size:.8rem}
+
+/* Section heading */
+.sh{text-align:center;margin-bottom:3rem}
+.sh .over{font-size:.78rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:.5rem}
+.sh h2{font-size:clamp(1.6rem,4vw,2.5rem);color:var(--navy)}
+.sh p{margin:.75rem auto 0;max-width:700px;color:var(--ink-lt);font-style:italic;line-height:1.8}
+
+/* Buttons */
+.btn{font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.07em;padding:.7rem 1.5rem;border-radius:3px;text-decoration:none;cursor:pointer;transition:all .2s;border:2px solid transparent;display:inline-block}
+.btn-primary{background:var(--red);color:#fff;border-color:var(--red-lt)}
+.btn-primary:hover{background:var(--red-lt);color:#fff;transform:translateY(-2px);box-shadow:0 5px 15px rgba(139,26,26,.4)}
+.btn-outline{background:transparent;color:var(--gold);border-color:var(--gold)}
+.btn-outline:hover{background:var(--gold);color:var(--navy)}
+
+/* === NAVIGATION === */
+#topnav{position:sticky;top:0;z-index:200;background:var(--navy);border-bottom:3px solid var(--gold);padding:.55rem 1.5rem}
+.nav-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:.25rem;flex-wrap:wrap}
+.nav-brand{font-family:'Cinzel',serif;font-size:.82rem;font-weight:700;color:var(--gold);text-decoration:none;margin-right:auto;white-space:nowrap}
+.nav-brand span{color:rgba(255,255,255,.6);font-weight:400}
+.nav-link{color:#a0b4d8;text-decoration:none;font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.06em;padding:.32rem .65rem;border-radius:3px;transition:all .2s}
+.nav-link:hover,.nav-link.active{color:var(--gold);background:rgba(201,168,76,.15)}
+
+/* Oracle Points counter */
+#pts-counter{font-family:'Cinzel',serif;font-size:.68rem;color:var(--gold);border:1px solid rgba(201,168,76,.3);padding:.25rem .6rem;border-radius:99px;margin-left:.5rem;white-space:nowrap;cursor:help}
+
+/* === HERO === */
+#hero{background:linear-gradient(170deg,#0d1527 0%,#1a2744 60%,#1e3060 100%);color:var(--parch);text-align:center;padding:5rem 1.5rem 4rem;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,.14) 0%,transparent 65%);pointer-events:none}
+.star-row{display:flex;justify-content:center;gap:10px;margin-bottom:1.5rem}
+.star{color:var(--gold);font-size:.9rem;opacity:.75;animation:twinkle 3s ease-in-out infinite}
+.star:nth-child(2n){animation-delay:.8s}.star:nth-child(3n){animation-delay:1.6s}.star:nth-child(5n){animation-delay:2.4s}
+@keyframes twinkle{0%,100%{opacity:.75;transform:scale(1)}50%{opacity:.3;transform:scale(.8)}}
+.hero-over{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;margin-bottom:1rem}
+#hero h1{font-family:'Cinzel Decorative',serif;font-size:clamp(1.9rem,6vw,3.8rem);color:#fff;text-shadow:0 2px 24px rgba(201,168,76,.35);margin-bottom:.75rem;line-height:1.2;cursor:pointer}
+.hero-sub{font-size:clamp(.9rem,2.5vw,1.15rem);color:var(--parch-dk);font-style:italic;max-width:680px;margin:0 auto 2.5rem;line-height:1.85}
+/* Parchment scroll */
+.hero-scroll{background:linear-gradient(135deg,#faf2de,#ead9a8 40%,#f4e9c4);border:2px solid var(--border);border-radius:4px;max-width:840px;margin:0 auto;padding:2rem;position:relative;box-shadow:0 10px 40px rgba(0,0,0,.35),inset 0 1px 3px rgba(255,255,255,.5)}
+.hero-scroll::before,.hero-scroll::after{content:'';position:absolute;left:0;right:0;height:10px;background:linear-gradient(90deg,var(--border),var(--gold-lt),var(--border))}
+.hero-scroll::before{top:0;border-radius:4px 4px 0 0}.hero-scroll::after{bottom:0;border-radius:0 0 4px 4px}
+.scroll-motto{font-family:'IM Fell English',serif;font-style:italic;font-size:.88rem;color:var(--ink-lt);text-align:center;margin-bottom:1.5rem;letter-spacing:.02em}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;color:var(--ink)}
+.stat-item{text-align:center;padding:.5rem}
+.stat-num{font-family:'Cinzel',serif;font-size:clamp(1.4rem,3vw,2.2rem);font-weight:900;color:var(--red);display:block}
+.stat-lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-lt);display:block;margin-top:.2rem}
+.hero-btns{display:flex;gap:.75rem;justify-content:center;margin-top:2rem;flex-wrap:wrap}
+#quill-btn{position:absolute;right:1.5rem;bottom:1.5rem;font-size:2rem;background:none;border:none;cursor:pointer;opacity:.4;transition:all .3s;filter:sepia(1);user-select:none}
+#quill-btn:hover{opacity:.9;transform:rotate(-20deg) scale(1.15)}
+
+/* === ACCURACY OVERVIEW === */
+.acc-overview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:1.25rem}
+.aoc{background:linear-gradient(135deg,var(--parch),var(--parch-dk));border:1.5px solid var(--border);border-radius:4px;padding:1.35rem;text-align:center;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+.aoc::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.aoc.gpt::before{background:#10a37f}.aoc.claude::before{background:#c07640}.aoc.gemini::before{background:#4285f4}.aoc.human::before{background:var(--red)}.aoc.mq::before{background:#6b46c1}.aoc.fantasy::before{background:#0e7490}
+.aoc:hover{transform:translateY(-3px);box-shadow:0 8px 24px var(--shadow)}
+.aoc .mn{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;color:var(--ink-lt);text-transform:uppercase;margin-bottom:.4rem}
+.aoc .pct{font-family:'Cinzel',serif;font-size:2.4rem;font-weight:900;color:var(--navy);line-height:1}
+.aoc .pct-lbl{font-size:.72rem;color:var(--ink-lt);margin-top:.2rem}
+
+/* Horizontal bar chart */
+.bar-chart{margin-top:1.5rem}
+.bar-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+.bar-lbl{font-size:.75rem;width:140px;flex-shrink:0;color:var(--ink-lt)}
+.bar-track{flex:1;height:13px;background:rgba(26,14,0,.1);border-radius:7px;overflow:hidden}
+.bar-fill{height:100%;border-radius:7px;background:linear-gradient(90deg,var(--navy),var(--navy-lt));width:0;transition:width 1.2s ease}
+.bar-pct{font-size:.72rem;font-family:'Cinzel',serif;font-weight:700;width:40px;text-align:right;color:var(--ink)}
+
+/* === JUSTICES === */
+#justices{background:var(--navy);padding:5rem 0}
+#justices .sh .over{color:var(--gold)}
+#justices .sh h2{color:#fff}
+#justices .sh p{color:var(--parch-dk)}
+.justices-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1.25rem;padding:0 1.5rem}
+.jcard{background:rgba(245,230,200,.07);border:1px solid rgba(201,168,76,.25);border-radius:6px;padding:1.25rem;text-align:center;cursor:pointer;transition:all .25s}
+.jcard:hover{background:rgba(245,230,200,.15);border-color:var(--gold);transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.jcard svg{width:140px;height:170px;margin:0 auto .75rem;display:block}
+.jname{font-family:'Cinzel',serif;font-size:.82rem;font-weight:700;color:#fff}
+.jtitle{font-size:.7rem;color:var(--gold);margin-top:.2rem;font-style:italic}
+.jappt{font-size:.67rem;color:#8090b0;margin-top:.2rem}
+.ideo-bar{margin:.7rem 0 .3rem;height:6px;border-radius:3px;background:linear-gradient(90deg,#1a4b8b 0%,#7c3aed 50%,#8b1a1a 100%);position:relative}
+.ideo-dot{position:absolute;top:-3px;width:12px;height:12px;border-radius:50%;background:var(--gold);border:2px solid #fff;transform:translateX(-50%)}
+.jacc{margin-top:.75rem}
+.acc-row{display:flex;align-items:center;gap:.4rem;font-size:.67rem;margin-bottom:.3rem}
+.acc-model{color:#7090b0;width:50px;flex-shrink:0}
+.acc-track{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.acc-fill{height:100%;border-radius:3px;width:0;transition:width 1.4s ease}
+.acc-fill.gpt{background:#10a37f}.acc-fill.claude{background:#c07640}.acc-fill.gemini{background:#4285f4}
+.acc-pct{color:var(--gold-lt);font-family:'Cinzel',serif;font-size:.63rem;width:32px;text-align:right}
+
+/* === PREDICTIONS === */
+.term-tabs{display:flex;gap:.5rem;margin-bottom:2rem;flex-wrap:wrap}
+.ttab{font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.05em;padding:.55rem 1.2rem;border:2px solid var(--border);background:transparent;color:var(--ink-lt);border-radius:3px;cursor:pointer;transition:all .2s}
+.ttab.active,.ttab:hover{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+.tpanel{display:none}.tpanel.active{display:block}
+.cases-grid{display:grid;gap:1.25rem}
+.ccase{background:linear-gradient(135deg,rgba(245,230,200,.75),rgba(232,213,163,.55));border:1px solid var(--border);border-radius:4px;overflow:hidden;box-shadow:0 2px 8px var(--shadow);transition:box-shadow .2s}
+.ccase:hover{box-shadow:0 6px 20px var(--shadow)}
+.cc-head{background:var(--navy);color:#fff;padding:.85rem 1.2rem;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.cc-name{font-family:'Cinzel',serif;font-size:.85rem;font-weight:700}
+.cc-cite{font-size:.68rem;color:#8090b0;margin-top:.2rem}
+.cc-badge{font-family:'Cinzel',serif;font-size:.72rem;font-weight:700;background:var(--gold);color:var(--navy);padding:.22rem .55rem;border-radius:3px;white-space:nowrap;flex-shrink:0}
+.cc-badge.pending{background:rgba(201,168,76,.2);color:var(--gold);border:1px solid var(--gold)}
+.cc-body{padding:1.2rem}
+.cc-issue{font-size:.83rem;font-style:italic;color:var(--ink-lt);margin-bottom:.9rem;border-left:3px solid var(--gold);padding-left:.75rem;line-height:1.65}
+.pred-row{display:flex;gap:.45rem;flex-wrap:wrap;align-items:center;margin-bottom:.75rem}
+.pred-lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-lt);margin-right:.2rem}
+.pill{display:inline-flex;align-items:center;gap:.3rem;font-size:.7rem;padding:.28rem .6rem;border-radius:99px;border:1px solid;font-family:'Cinzel',serif}
+.pill.ok{background:rgba(45,80,22,.1);border-color:var(--green-lt);color:var(--green)}
+.pill.bad{background:rgba(139,26,26,.1);border-color:var(--red-lt);color:var(--red)}
+.pill.pend{background:rgba(26,39,68,.08);border-color:var(--navy-lt);color:var(--navy)}
+.votes{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.5rem}
+.vc{font-size:.63rem;font-family:'Cinzel',serif;padding:.22rem .48rem;border-radius:3px;display:inline-flex;align-items:center;gap:.2rem}
+.vc.maj{background:rgba(26,39,68,.1);color:var(--navy);border:1px solid rgba(26,39,68,.2)}
+.vc.dis{background:rgba(139,26,26,.09);color:var(--red);border:1px solid rgba(139,26,26,.2)}
+
+/* === METHODOLOGY === */
+.accordion{border:1.5px solid var(--border);border-radius:4px;overflow:hidden}
+.ai{border-bottom:1px solid var(--border)}.ai:last-child{border-bottom:none}
+.at{width:100%;background:rgba(245,230,200,.8);border:none;padding:1rem 1.4rem;text-align:left;cursor:pointer;font-family:'Cinzel',serif;font-size:.85rem;color:var(--navy);font-weight:600;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
+.at:hover{background:rgba(232,213,163,.9)}
+.at.open{background:var(--navy);color:var(--gold)}
+.at .ic{transition:transform .3s;font-size:.9rem}
+.at.open .ic{transform:rotate(180deg)}
+.ac{max-height:0;overflow:hidden;transition:max-height .45s ease;background:rgba(248,238,215,.5);padding:0 1.4rem}
+.ac.open{max-height:900px;padding:1.2rem 1.4rem}
+.ac p{font-size:.88rem;line-height:1.85;color:var(--ink-lt);margin-bottom:.75rem}
+.ac ul{padding-left:1.2rem;margin-bottom:.75rem}
+.ac li{font-size:.88rem;line-height:1.75;color:var(--ink-lt);margin-bottom:.35rem}
+.ac strong{color:var(--ink);font-style:italic}
+.ac .formula{font-family:monospace;background:rgba(26,14,0,.07);padding:.5rem .85rem;border-radius:3px;font-size:.82rem;margin:.5rem 0;display:block;border-left:3px solid var(--gold);color:var(--ink)}
+
+/* === DATA DOWNLOAD === */
+.dl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:1.25rem}
+.dlcard{background:linear-gradient(135deg,var(--parch),var(--parch-dk));border:2px solid var(--border);border-radius:4px;padding:1.5rem;display:flex;flex-direction:column;gap:.85rem;transition:all .2s}
+.dlcard:hover{box-shadow:0 6px 20px var(--shadow);transform:translateY(-2px)}
+.dl-icon{font-size:2rem}
+.dl-title{font-family:'Cinzel',serif;font-size:.9rem;color:var(--navy)}
+.dl-desc{font-size:.8rem;color:var(--ink-lt);line-height:1.65;flex:1}
+.dl-meta{font-size:.7rem;color:var(--ink-lt);font-style:italic}
+.btn-dl{display:inline-flex;align-items:center;gap:.45rem;font-family:'Cinzel',serif;font-size:.72rem;padding:.55rem .95rem;background:var(--navy);color:var(--gold);border:1px solid var(--navy);border-radius:3px;text-decoration:none;cursor:pointer;transition:all .2s;justify-content:center}
+.btn-dl:hover{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+
+/* === COMPETITION === */
+#compete{background:var(--navy);padding:5rem 0}
+#compete .sh h2{color:#fff}
+#compete .sh p{color:var(--parch-dk)}
+.compete-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.75rem}
+.cform-wrap,.clb-wrap{background:rgba(245,230,200,.06);border:1px solid rgba(201,168,76,.25);border-radius:6px;padding:1.6rem}
+.ctitle{font-family:'Cinzel',serif;font-size:.95rem;color:var(--gold);margin-bottom:1.25rem}
+.fg{margin-bottom:1rem}
+.flbl{display:block;font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.06em;color:#a0b4d8;margin-bottom:.38rem}
+.finput,.fsel{width:100%;padding:.58rem .82rem;background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.28);border-radius:3px;color:var(--parch);font-family:'IM Fell English',serif;font-size:.88rem;transition:border-color .2s}
+.finput:focus,.fsel:focus{outline:none;border-color:var(--gold);background:rgba(255,255,255,.1)}
+.fsel option{background:var(--navy)}
+.cpblock{border:1px solid rgba(201,168,76,.18);border-radius:4px;padding:.9rem;margin-bottom:.85rem}
+.cpname{font-family:'Cinzel',serif;font-size:.75rem;color:var(--gold);margin-bottom:.6rem}
+.cpbtns{display:flex;gap:.45rem;flex-wrap:wrap}
+.cpbtn{flex:1;min-width:85px;padding:.45rem .65rem;background:transparent;border:1px solid rgba(201,168,76,.25);color:#a0b4d8;font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.03em;border-radius:3px;cursor:pointer;transition:all .2s}
+.cpbtn:hover{border-color:var(--gold);color:var(--gold)}
+.cpbtn.sel-p{background:rgba(45,80,22,.3);border-color:var(--green-lt);color:#7ecb7a}
+.cpbtn.sel-r{background:rgba(139,26,26,.3);border-color:var(--red-lt);color:#e07070}
+.btn-submit{width:100%;padding:.88rem;background:var(--red);color:#fff;font-family:'Cinzel',serif;font-size:.82rem;letter-spacing:.1em;border:2px solid #a02020;border-radius:3px;cursor:pointer;transition:all .2s;margin-top:.5rem}
+.btn-submit:hover{background:var(--red-lt);transform:translateY(-1px);box-shadow:0 4px 14px rgba(139,26,26,.5)}
+/* Leaderboard */
+.lb-row{display:flex;align-items:center;gap:.6rem;padding:.65rem 0;border-bottom:1px solid rgba(201,168,76,.12);font-size:.83rem}
+.lb-rnk{font-family:'Cinzel',serif;font-weight:700;color:var(--gold);width:26px;flex-shrink:0}
+.lb-rnk.r1{color:#ffd700;font-size:1.05rem}.lb-rnk.r2{color:#c0c0c0}.lb-rnk.r3{color:#cd7f32}
+.lb-nm{flex:1;color:var(--parch)}
+.lb-sc{font-family:'Cinzel',serif;color:var(--gold);font-weight:700}
+.lb-empty{color:#7090a8;font-style:italic;font-size:.83rem;text-align:center;padding:2rem 0}
+
+/* === ABOUT === */
+.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.25rem}
+.acard{background:linear-gradient(135deg,var(--parch),var(--parch-dk));border:2px double var(--border);border-radius:4px;padding:1.75rem;text-align:center}
+.aavatar{font-size:3.2rem;margin-bottom:.9rem}
+.aname{font-family:'Cinzel',serif;font-size:.95rem;color:var(--navy)}
+.arole{font-style:italic;font-size:.8rem;color:var(--ink-lt);margin-top:.22rem}
+.abio{font-size:.8rem;color:var(--ink-lt);margin-top:.7rem;line-height:1.75}
+.alinks{display:flex;gap:.45rem;justify-content:center;margin-top:.9rem;flex-wrap:wrap}
+.alink{font-family:'Cinzel',serif;font-size:.68rem;padding:.32rem .65rem;border:1px solid var(--border);border-radius:3px;color:var(--red);text-decoration:none;transition:all .2s}
+.alink:hover{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+
+/* === FOOTER === */
+footer{background:#060d1b;color:#5a6a88;padding:3rem 1.5rem 1.5rem;text-align:center;border-top:3px solid var(--gold)}
+.f-eagle{font-size:3rem;cursor:pointer;transition:transform .35s;display:inline-block;user-select:none}
+.f-eagle:hover{transform:scale(1.12) rotate(6deg)}
+.f-tagline{font-family:'Cinzel',serif;font-size:.88rem;color:var(--gold);margin:.5rem 0}
+.f-links{display:flex;gap:1.5rem;justify-content:center;margin:1.25rem 0;flex-wrap:wrap}
+.f-links a{color:#5a6a88;text-decoration:none;font-size:.78rem;transition:color .2s}
+.f-links a:hover{color:var(--gold)}
+.f-legal{font-size:.72rem;margin-top:1.5rem;line-height:1.9;max-width:700px;margin-left:auto;margin-right:auto}
+.hidden-txt{color:#060d1b;font-size:1px;user-select:all;line-height:0}
+
+/* === MODALS === */
+.moverlay{position:fixed;inset:0;z-index:999;background:rgba(6,13,27,.88);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.moverlay.open{opacity:1;pointer-events:all}
+.mbox{background:linear-gradient(135deg,#faf2de,#e8d5a3);border:3px double var(--border);border-radius:6px;padding:2.5rem;max-width:520px;width:90%;position:relative;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.55);transform:scale(.9);transition:transform .3s}
+.moverlay.open .mbox{transform:scale(1)}
+.mclose{position:absolute;top:.65rem;right:.65rem;background:none;border:none;font-size:1.15rem;cursor:pointer;color:var(--ink-lt);transition:color .2s}
+.mclose:hover{color:var(--red)}
+.micon{font-size:3rem;margin-bottom:.65rem}
+.mtitle{font-family:'Cinzel Decorative',serif;font-size:1.15rem;color:var(--red);margin-bottom:.65rem}
+.mbody{font-size:.88rem;color:var(--ink-lt);line-height:1.85;font-style:italic}
+.mpts{font-family:'Cinzel',serif;font-weight:700;color:var(--gold);margin-top:.75rem;font-size:1.05rem}
+
+/* Toast */
+#toast{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;background:var(--navy);border:2px solid var(--gold);color:var(--gold);padding:.7rem 1.2rem;border-radius:4px;font-family:'Cinzel',serif;font-size:.78rem;opacity:0;transform:translateY(8px);transition:all .35s;pointer-events:none;max-width:260px}
+#toast.show{opacity:1;transform:translateY(0)}
+
+/* === SCROLL ANIMATIONS === */
+.fade-up{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.fade-up.vis{opacity:1;transform:translateY(0)}
+
+/* === RESPONSIVE === */
+@media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}.compete-layout{grid-template-columns:1fr}}
+@media(max-width:600px){.justices-grid{grid-template-columns:repeat(2,1fr)}.stats-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<!-- NAV -->
+<nav id="topnav">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-brand">⚖ The Oracle <span>of the Bench</span></a>
+    <a href="#justices" class="nav-link">The Bench</a>
+    <a href="#predictions" class="nav-link">Predictions</a>
+    <a href="#methodology" class="nav-link">Methodology</a>
+    <a href="#data" class="nav-link">Data</a>
+    <a href="#compete" class="nav-link">Compete</a>
+    <a href="#about" class="nav-link">About</a>
+    <span id="pts-counter" title="Your Oracle Points — find easter eggs to earn more!">🏛 <span id="pts-val">0</span> pts</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="star-row" aria-hidden="true">
+    <span class="star">★</span><span class="star">★</span><span class="star">★</span>
+    <span class="star">★</span><span class="star">★</span><span class="star">★</span>
+    <span class="star">★</span><span class="star">★</span><span class="star">★</span>
+    <span class="star">★</span><span class="star">★</span><span class="star">★</span>
+    <span class="star">★</span>
+  </div>
+  <p class="hero-over">Established in the Year of Our Republic 2024</p>
+  <h1 id="hero-title" title="Double-click for a surprise!">The Oracle of the Bench</h1>
+  <p class="hero-sub">Can large language models predict the judgments of the United States Supreme Court?<br>
+  An empirical investigation across two Court Terms, nine Justices, and three frontier AI systems.</p>
+  <div class="hero-scroll">
+    <p class="scroll-motto">✦ &nbsp; "In questions of power, let no more be heard of confidence in man, but bind him down from mischief by the chains of the Constitution." — Thomas Jefferson &nbsp; ✦</p>
+    <div class="stats-grid">
+      <div class="stat-item"><span class="stat-num">81.97%</span><span class="stat-lbl">Best Model<br>Case Accuracy</span></div>
+      <div class="stat-item"><span class="stat-num">3</span><span class="stat-lbl">Frontier LLMs<br>Evaluated</span></div>
+      <div class="stat-item"><span class="stat-num">2</span><span class="stat-lbl">Court Terms<br>Analyzed</span></div>
+      <div class="stat-item"><span class="stat-num">9</span><span class="stat-lbl">Justices<br>Modeled</span></div>
+    </div>
+  </div>
+  <div class="hero-btns">
+    <a href="#predictions" class="btn btn-primary">View Predictions</a>
+    <a href="#compete" class="btn btn-outline">Enter Competition</a>
+    <a href="#methodology" class="btn btn-outline">Read Methodology</a>
+  </div>
+  <button id="quill-btn" title="Click the quill…" aria-label="Secret quill button">🪶</button>
+</section>
+
+<!-- ACCURACY OVERVIEW -->
+<section class="section">
+  <div class="container">
+    <div class="sh fade-up">
+      <span class="over">— Overall Performance —</span>
+      <h2>How Well Did the Models Forecast?</h2>
+      <p>Case-level accuracy for the 2023–24 Term, compared against human expert baselines and the Martin–Quinn statistical model.</p>
+    </div>
+    <div class="acc-overview-grid fade-up">
+      <div class="aoc claude"><div class="mn">Claude 3.5 Sonnet</div><div class="pct">81.97%</div><div class="pct-lbl">Case Accuracy</div></div>
+      <div class="aoc fantasy"><div class="mn">FantasySCOTUS</div><div class="pct">83.10%</div><div class="pct-lbl">Crowd Benchmark</div></div>
+      <div class="aoc gemini"><div class="mn">Gemini 1.5 Pro</div><div class="pct">77.87%</div><div class="pct-lbl">Case Accuracy</div></div>
+      <div class="aoc gpt"><div class="mn">GPT-4o</div><div class="pct">76.23%</div><div class="pct-lbl">Case Accuracy</div></div>
+      <div class="aoc mq"><div class="mn">Martin–Quinn Model</div><div class="pct">75.00%</div><div class="pct-lbl">Statistical Baseline</div></div>
+      <div class="aoc human"><div class="mn">Legal Expert Panel</div><div class="pct">59.10%</div><div class="pct-lbl">Human Baseline</div></div>
+    </div>
+    <div class="divider fade-up">✦ ✦ ✦</div>
+    <div class="colonial-box fade-up">
+      <h3 style="font-size:.95rem;color:var(--navy);margin-bottom:1rem">Justice-Level Case Accuracy — All Models</h3>
+      <div id="bar-chart-container"></div>
+    </div>
+  </div>
+</section>
+
+<!-- THE BENCH -->
+<section id="justices">
+  <div class="sh" style="padding:0 1.5rem">
+    <span class="over">— The Nine —</span>
+    <h2>The Bench</h2>
+    <p>The current composition of the Supreme Court of the United States, with per-justice prediction accuracy across all three models. Click any justice for more detail.</p>
+  </div>
+  <div class="justices-grid" id="justices-grid"></div>
+</section>
+
+<!-- PREDICTIONS -->
+<section id="predictions" class="section">
+  <div class="container">
+    <div class="sh fade-up">
+      <span class="over">— Case Forecasts —</span>
+      <h2>Term Predictions</h2>
+      <p>Each case shows the actual outcome alongside predictions from GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro. ✓ = correct; ✗ = incorrect.</p>
+    </div>
+    <div class="term-tabs">
+      <button class="ttab active" data-term="2023-24">Term 2023–24</button>
+      <button class="ttab" data-term="2024-25">Term 2024–25</button>
+    </div>
+    <div id="cases-container"></div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section id="methodology" class="section section-alt">
+  <div class="container">
+    <div class="sh fade-up">
+      <span class="over">— Scientific Method —</span>
+      <h2>Methodology</h2>
+      <p>A rigorous empirical framework for forecasting Supreme Court decisions using large language models, grounded in legal information theory and machine learning evaluation.</p>
+    </div>
+    <div class="accordion fade-up" id="methodology-accordion"></div>
+    <div class="divider" style="margin-top:2.5rem">✦ ✦ ✦</div>
+    <div class="colonial-box fade-up" style="text-align:center">
+      <p style="font-size:.85rem;color:var(--ink-lt);font-style:italic;line-height:1.9">
+        <strong>Citation:</strong> This project is based on original research. The working paper is available for download in the Data section below. Please cite accordingly when referencing these predictions or methodology in academic work.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- DATA DOWNLOAD -->
+<section id="data" class="section">
+  <div class="container">
+    <div class="sh fade-up">
+      <span class="over">— Open Science —</span>
+      <h2>Data &amp; Replication</h2>
+      <p>All data used in this project is made freely available for research, replication, and community use. Docket materials include petitions, briefs, oral argument transcripts, and SCOTUS opinions.</p>
+    </div>
+    <div class="dl-grid fade-up" id="dl-grid"></div>
+  </div>
+</section>
+
+<!-- COMPETITION -->
+<section id="compete">
+  <div class="container" style="padding-top:5rem;padding-bottom:5rem">
+    <div class="sh fade-up">
+      <span class="over">— Vox Populi —</span>
+      <h2>The People's Predictions</h2>
+      <p>Think you can out-forecast the AIs? Register your predictions for the current term's pending cases and compete on our leaderboard. Scores are tallied after each decision is handed down.</p>
+    </div>
+    <div class="compete-layout fade-up">
+      <div class="cform-wrap">
+        <p class="ctitle">⚖ Submit Your Predictions — Current Term</p>
+        <form id="predict-form" autocomplete="off">
+          <div class="fg"><label class="flbl">Your Name / Handle</label><input class="finput" id="pred-name" placeholder="e.g. OriginalismAdvocate1788" required maxlength="40"></div>
+          <div class="fg"><label class="flbl">Your Institution / Affiliation (optional)</label><input class="finput" id="pred-inst" placeholder="e.g. Harvard Law School"></div>
+          <div id="pred-cases-container"></div>
+          <button type="submit" class="btn-submit">⚖ SUBMIT PREDICTIONS TO THE RECORD</button>
+        </form>
+      </div>
+      <div class="clb-wrap">
+        <p class="ctitle">🏛 Oracle Leaderboard</p>
+        <div id="leaderboard"></div>
+        <p style="font-size:.72rem;color:#5a7090;margin-top:1.25rem;font-style:italic;line-height:1.7">Scores are updated after each decision. Correct case outcome = 1 pt. Bonus points for correct justice-level predictions. Leaderboard is stored locally in your browser.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section section-alt">
+  <div class="container">
+    <div class="sh fade-up">
+      <span class="over">— The Founders of This Project —</span>
+      <h2>About the Research</h2>
+      <p>This project was conducted by legal scholars and computational researchers to examine the forecasting capabilities of large language models in the domain of constitutional adjudication.</p>
+    </div>
+    <div class="about-grid fade-up" id="about-grid"></div>
+    <div class="divider" style="margin-top:2.5rem">✦ ✦ ✦</div>
+    <div class="colonial-box fade-up" style="max-width:680px;margin:0 auto">
+      <h3 style="font-family:'Cinzel',serif;font-size:.9rem;color:var(--navy);margin-bottom:.75rem">Acknowledgements</h3>
+      <p style="font-size:.82rem;color:var(--ink-lt);line-height:1.85">The authors gratefully acknowledge the Supreme Court of the United States for its public docket system, the creators of the Supreme Court Database (Spaeth et al.), and the FantasySCOTUS community for providing a human-performance benchmark. This research was conducted in accordance with all applicable ethical guidelines for AI evaluation research.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div id="f-eagle-wrap"><span class="f-eagle" id="f-eagle" title="Click me 5 times…" role="button" tabindex="0" aria-label="Eagle seal">🦅</span></div>
+  <p class="f-tagline">The Oracle of the Bench</p>
+  <p style="font-size:.78rem;color:#3a4a60;font-style:italic">E Pluribus Unum — From Many Models, One Forecast</p>
+  <div class="f-links">
+    <a href="#predictions">Predictions</a>
+    <a href="#methodology">Methodology</a>
+    <a href="#data">Data</a>
+    <a href="#compete">Compete</a>
+    <a href="#about">About</a>
+  </div>
+  <div class="f-legal">
+    © 2024–2026 Amit Haim, Aniket Kesari &amp; Johannes Kruse. Based on <em>"LLMs as Supreme Court Super Forecasters?"</em> (2026). All case outcomes sourced from official SCOTUS opinions. AI predictions are for academic research purposes only and do not constitute legal advice. The Founders would have found this delightful.
+  </div>
+  <!-- Easter Egg #9: Hidden text — select to reveal! -->
+  <p class="hidden-txt" aria-hidden="true">🏛 YOU FOUND THE HIDDEN PARCHMENT TEXT! "We the People" Oracle Bonus: +25 pts! Type WETHEPPL in your browser console to claim.</p>
+</footer>
+
+<!-- MODALS -->
+<div class="moverlay" id="modal-ee" role="dialog" aria-modal="true">
+  <div class="mbox">
+    <button class="mclose" onclick="closeModal('modal-ee')" aria-label="Close">✕</button>
+    <div class="micon" id="modal-icon">🏛</div>
+    <h2 class="mtitle" id="modal-title">Easter Egg Discovered!</h2>
+    <p class="mbody" id="modal-body">A secret of the Republic has been revealed.</p>
+    <p class="mpts" id="modal-pts">+50 Oracle Points</p>
+  </div>
+</div>
+<div class="moverlay" id="modal-justice" role="dialog" aria-modal="true">
+  <div class="mbox" style="max-width:600px">
+    <button class="mclose" onclick="closeModal('modal-justice')" aria-label="Close">✕</button>
+    <div id="modal-justice-body"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+/* ============================================================
+   THE ORACLE OF THE BENCH — COMPLETE SCRIPT
+   ============================================================ */
+
+// ── DATA ─────────────────────────────────────────────────────
+
+const JUSTICES = [
+  { id:'roberts',  name:'John G. Roberts Jr.', title:'Chief Justice', appt:'W. Bush, 2005',
+    ideo:.32, hair:{c:'#b4b4b8',s:'swept-silver'}, glasses:false, skin:'#ddc9a0',
+    acc:{gpt:70.23,claude:78.69,gemini:76.67},
+    bio:'The Chief Justice is widely regarded as the institutional guardian of the Court\'s legitimacy. Appointed in 2005, he has increasingly occupied the ideological center of the Court.',
+    famousCases:['NFIB v. Sebelius (2012)','Dobbs dissent (2022)','Loper Bright (2024)']
+  },
+  { id:'thomas',   name:'Clarence Thomas', title:'Associate Justice', appt:'H.W. Bush, 1991',
+    ideo:.91, hair:{c:'#1a1a1a',s:'cropped-dark'}, glasses:true, glassType:'rect', skin:'#a07850',
+    acc:{gpt:80.99,claude:86.78,gemini:87.39},
+    bio:'The longest-serving current Justice, Thomas is known for his originalist jurisprudence and willingness to reconsider long-standing precedents. He was also the highest-predicted justice by Claude and Gemini.',
+    famousCases:['McDonald v. Chicago (2010)','Bruen (2022)','Students for Fair Admissions (2023)']
+  },
+  { id:'alito',    name:'Samuel A. Alito Jr.', title:'Associate Justice', appt:'W. Bush, 2006',
+    ideo:.85, hair:{c:'#e8e0d0',s:'swept-white'}, glasses:false, skin:'#d4c0a0',
+    acc:{gpt:70.97,claude:81.67,gemini:78.33},
+    bio:'A consistent conservative voice, Justice Alito authored the majority opinion in Dobbs v. Jackson (2022), overturning Roe v. Wade. GPT-4o found him among the hardest to predict.',
+    famousCases:['Dobbs v. Jackson (2022)','Trump v. United States (2024)','Hobby Lobby (2014)']
+  },
+  { id:'sotomayor',name:'Sonia Sotomayor', title:'Associate Justice', appt:'Obama, 2009',
+    ideo:-.72, hair:{c:'#1a0a00',s:'shoulder-dark'}, glasses:true, glassType:'rect', skin:'#c09870',
+    acc:{gpt:84.43,claude:84.43,gemini:80.60},
+    bio:'The first Hispanic Justice, Sotomayor is a reliable liberal voice and prolific dissenter on the Roberts Court. She was among the most consistently predicted justices by GPT-4o.',
+    famousCases:['Utah v. Strieff dissent (2016)','SFFA dissent (2023)','City of Grants Pass dissent (2024)']
+  },
+  { id:'kagan',    name:'Elena Kagan', title:'Associate Justice', appt:'Obama, 2010',
+    ideo:-.61, hair:{c:'#2a1a0a',s:'short-dark'}, glasses:true, glassType:'semi', skin:'#d4b890',
+    acc:{gpt:77.97,claude:83.61,gemini:79.17},
+    bio:'Former Dean of Harvard Law School and U.S. Solicitor General, Kagan is known for her sharp writing and pragmatic liberalism. She has authored notable dissents and majority opinions alike.',
+    famousCases:['West Virginia v. EPA dissent (2022)','Loper Bright dissent (2024)','Snyder v. United States (2024)']
+  },
+  { id:'gorsuch',  name:'Neil M. Gorsuch', title:'Associate Justice', appt:'Trump, 2017',
+    ideo:.68, hair:{c:'#5a3a18',s:'wavy-brown'}, glasses:false, skin:'#d8c4a0',
+    acc:{gpt:83.33,claude:85.00,gemini:84.75},
+    bio:'A textualist and originalist, Gorsuch has shown occasional libertarian tendencies that produce surprising cross-ideological alliances. He was the second-most-accurately predicted justice by Claude.',
+    famousCases:['Bostock v. Clayton County (2020)','Oklahoma v. Castro-Huerta (2022)','Carpenter v. US (join)']
+  },
+  { id:'kavanaugh',name:'Brett M. Kavanaugh', title:'Associate Justice', appt:'Trump, 2018',
+    ideo:.55, hair:{c:'#3a2510',s:'parted-brown'}, glasses:false, skin:'#d4bea0',
+    acc:{gpt:76.59,claude:83.61,gemini:80.65},
+    bio:'Often occupying the median seat alongside the Chief Justice, Kavanaugh is considered a swing vote on key issues. His votes are carefully watched in close cases.',
+    famousCases:['Allen v. Milligan (2023)','Dobbs (concurrence, 2022)','Trump v. US (join, 2024)']
+  },
+  { id:'barrett',  name:'Amy Coney Barrett', title:'Associate Justice', appt:'Trump, 2020',
+    ideo:.72, hair:{c:'#2a1505',s:'long-wavy'}, glasses:false, skin:'#d8c0a0',
+    acc:{gpt:77.87,claude:82.79,gemini:79.83},
+    bio:'A former Notre Dame law professor and circuit judge, Barrett is a committed textualist. She occasionally parts from the conservative bloc in procedural and statutory cases.',
+    famousCases:['United States v. Rahimi (2024)','Harrington v. Purdue Pharma (dissent, 2024)','Trump v. US (join, 2024)']
+  },
+  { id:'kjb',      name:'Ketanji Brown Jackson', title:'Associate Justice', appt:'Biden, 2022',
+    ideo:-.78, hair:{c:'#1a0800',s:'locs'}, glasses:true, glassType:'wire', skin:'#8a6040',
+    acc:{gpt:80.17,claude:83.47,gemini:82.20},
+    bio:'The first Black woman to serve on the Supreme Court, Justice Jackson brings experience as a federal public defender and district court judge. She joined the Court in time for the 2022–23 term.',
+    famousCases:['Students for Fair Admissions (dissent, 2023)','Loper Bright (join dissent, 2024)','Harrington v. Purdue (dissent, 2024)']
+  },
+];
+
+const TERMS = {
+  '2023-24': [
+    { name:'Loper Bright Enterprises v. Raimondo', cite:'No. 22-451', area:'Administrative Law',
+      issue:'Whether the Court should overrule Chevron U.S.A. v. Natural Resources Defense Council, which requires courts to defer to federal agencies\' reasonable interpretations of ambiguous statutes.',
+      outcome:'petitioner', decision:'6–3', result:'Chevron doctrine overruled after 40 years.',
+      majority:['Roberts','Thomas','Alito','Gorsuch','Kavanaugh','Barrett'],
+      dissent:['Sotomayor','Kagan','KBJ'],
+      preds:{gpt:{v:'petitioner',ok:true},claude:{v:'petitioner',ok:true},gemini:{v:'petitioner',ok:true}}
+    },
+    { name:'Trump v. United States', cite:'No. 23-939', area:'Constitutional Law',
+      issue:'Whether and to what extent a former President enjoys presidential immunity from criminal prosecution for conduct alleged to involve official acts during his tenure in office.',
+      outcome:'petitioner', decision:'6–3', result:'Presidents have absolute immunity for core constitutional acts and presumptive immunity for other official acts.',
+      majority:['Roberts','Thomas','Alito','Gorsuch','Kavanaugh','Barrett'],
+      dissent:['Sotomayor','Kagan','KBJ'],
+      preds:{gpt:{v:'petitioner',ok:true},claude:{v:'petitioner',ok:true},gemini:{v:'respondent',ok:false}}
+    },
+    { name:'United States v. Rahimi', cite:'No. 22-915', area:'Second Amendment',
+      issue:'Whether 18 U.S.C. § 922(g)(8), which prohibits individuals subject to domestic violence restraining orders from possessing firearms, violates the Second Amendment.',
+      outcome:'respondent', decision:'8–1', result:'Federal law prohibiting domestic abusers from possessing firearms is constitutional.',
+      majority:['Roberts','Sotomayor','Kagan','Gorsuch','Kavanaugh','Barrett','KBJ','Alito'],
+      dissent:['Thomas'],
+      preds:{gpt:{v:'respondent',ok:true},claude:{v:'respondent',ok:true},gemini:{v:'respondent',ok:true}}
+    },
+    { name:'City of Grants Pass v. Johnson', cite:'No. 23-175', area:'Eighth Amendment',
+      issue:'Whether the Eighth Amendment\'s prohibition on cruel and unusual punishment bars a city from enforcing generally applicable anti-camping ordinances against homeless persons.',
+      outcome:'petitioner', decision:'6–3', result:'Cities may enforce anti-camping laws against homeless individuals without violating the Eighth Amendment.',
+      majority:['Roberts','Thomas','Alito','Gorsuch','Kavanaugh','Barrett'],
+      dissent:['Sotomayor','Kagan','KBJ'],
+      preds:{gpt:{v:'petitioner',ok:true},claude:{v:'petitioner',ok:true},gemini:{v:'respondent',ok:false}}
+    },
+    { name:'Fischer v. United States', cite:'No. 23-5572', area:'Criminal Law / Jan. 6',
+      issue:'Whether 18 U.S.C. § 1512(c)(2)—which criminalizes obstruction of an official proceeding—covers the January 6, 2021 breach of the U.S. Capitol.',
+      outcome:'petitioner', decision:'6–3', result:'The statute\'s reach is narrowed; obstruction requires evidence-tampering nexus.',
+      majority:['Roberts','Thomas','Alito','Gorsuch','Kavanaugh','KBJ'],
+      dissent:['Sotomayor','Kagan','Barrett'],
+      preds:{gpt:{v:'petitioner',ok:true},claude:{v:'respondent',ok:false},gemini:{v:'respondent',ok:false}}
+    },
+    { name:'Harrington v. Purdue Pharma LP', cite:'No. 23-124', area:'Bankruptcy',
+      issue:'Whether the Bankruptcy Code permits a court to approve a reorganization plan that provides a non-consensual release of third-party claims against a non-debtor (the Sackler family).',
+      outcome:'petitioner', decision:'5–4', result:'The bankruptcy plan shielding the Sackler family from opioid lawsuits is disallowed.',
+      majority:['Gorsuch','Roberts','Thomas','Alito','KBJ'],
+      dissent:['Kavanaugh','Sotomayor','Kagan','Barrett'],
+      preds:{gpt:{v:'petitioner',ok:true},claude:{v:'petitioner',ok:true},gemini:{v:'respondent',ok:false}}
+    },
+    { name:'National Rifle Association v. Vullo', cite:'No. 22-842', area:'First Amendment',
+      issue:'Whether a government official violates the First Amendment by coercing a third party to cease doing business with a disfavored advocacy organization.',
+      outcome:'petitioner', decision:'9–0', result:'Government coercion of financial institutions against the NRA violated the First Amendment.',
+      majority:['Roberts','Thomas','Alito','Sotomayor','Kagan','Gorsuch','Kavanaugh','Barrett','KBJ'],
+      dissent:[],
+      preds:{gpt:{v:'petitioner',ok:true},claude:{v:'petitioner',ok:true},gemini:{v:'petitioner',ok:true}}
+    },
+    { name:'Moody v. NetChoice', cite:'No. 22-277', area:'First Amendment / Tech',
+      issue:'Whether Florida and Texas laws restricting social media companies\' ability to moderate content violate the First Amendment.',
+      outcome:'vacated', decision:'9–0', result:'Vacated and remanded; lower courts failed to conduct proper facial challenge analysis.',
+      majority:['Roberts','Thomas','Alito','Sotomayor','Kagan','Gorsuch','Kavanaugh','Barrett','KBJ'],
+      dissent:[],
+      preds:{gpt:{v:'petitioner',ok:false},claude:{v:'petitioner',ok:false},gemini:{v:'petitioner',ok:false}}
+    },
+  ],
+  '2024-25': [
+    { name:'TikTok Inc. v. Garland', cite:'No. 24-656', area:'First Amendment / National Security',
+      issue:'Whether the law requiring ByteDance to divest TikTok or face a ban violates the First Amendment rights of TikTok and its users.',
+      outcome:'respondent', decision:'9–0', result:'The divestiture law is upheld; national security interest justified the restriction.',
+      majority:['Roberts','Thomas','Alito','Sotomayor','Kagan','Gorsuch','Kavanaugh','Barrett','KBJ'],
+      dissent:[],
+      preds:{gpt:{v:'respondent',ok:true},claude:{v:'respondent',ok:true},gemini:{v:'respondent',ok:true}}
+    },
+    { name:'Free Speech Coalition v. Paxton', cite:'No. 23-1122', area:'First Amendment',
+      issue:'Whether Texas\'s age-verification law for online pornographic content violates the First Amendment rights of adult content providers and users.',
+      outcome:'respondent', decision:'6–3', result:'Age verification law upheld; state has sufficient interest in protecting minors.',
+      majority:['Roberts','Thomas','Alito','Gorsuch','Kavanaugh','Barrett'],
+      dissent:['Sotomayor','Kagan','KBJ'],
+      preds:{gpt:{v:'petitioner',ok:false},claude:{v:'respondent',ok:true},gemini:{v:'petitioner',ok:false}}
+    },
+    { name:'Garland v. VanDerStok', cite:'No. 23-629', area:'Administrative Law / Firearms',
+      issue:'Whether the ATF\'s rule classifying "ghost gun" kits as firearms under the Gun Control Act is a permissible exercise of agency authority.',
+      outcome:'respondent', decision:'7–2', result:'ATF rule upheld; ghost gun kits fall within the statutory definition of firearms.',
+      majority:['Roberts','Thomas','Sotomayor','Kagan','Gorsuch','Kavanaugh','KBJ'],
+      dissent:['Alito','Barrett'],
+      preds:{gpt:{v:'respondent',ok:true},claude:{v:'respondent',ok:true},gemini:{v:'respondent',ok:true}}
+    },
+    { name:'Glossip v. Oklahoma', cite:'No. 22-7466', area:'Death Penalty / Due Process',
+      issue:'Whether the State\'s suppression of evidence and knowing use of false testimony rendered Richard Glossip\'s capital trial fundamentally unfair.',
+      outcome:'petitioner', decision:'6–3', result:'Glossip\'s conviction reversed; state withheld material evidence violating due process.',
+      majority:['Roberts','Sotomayor','Kagan','Kavanaugh','Barrett','KBJ'],
+      dissent:['Thomas','Alito','Gorsuch'],
+      preds:{gpt:{v:'petitioner',ok:true},claude:{v:'petitioner',ok:true},gemini:{v:'petitioner',ok:true}}
+    },
+    { name:'City & County of San Francisco v. EPA', cite:'No. 23-753', area:'Environmental Law',
+      issue:'Whether the Clean Water Act allows the EPA to impose generic "narrative" water-quality standards in a permit without specifying what a permittee must actually do to comply.',
+      outcome:'petitioner', decision:'5–4', result:'EPA cannot impose vague narrative standards without specific compliance guidance.',
+      majority:['Roberts','Thomas','Alito','Gorsuch','Kavanaugh'],
+      dissent:['Sotomayor','Kagan','Barrett','KBJ'],
+      preds:{gpt:{v:'petitioner',ok:true},claude:{v:'petitioner',ok:true},gemini:{v:'respondent',ok:false}}
+    },
+    { name:'Barnes v. Felix', cite:'No. 23-1007', area:'Fourth Amendment / Policing',
+      issue:'Whether the "moment of threat" doctrine—which evaluates police use of force only at the instant force was used—conflicts with the Fourth Amendment\'s objective reasonableness standard.',
+      outcome:'petitioner', decision:'9–0', result:'Courts must consider the totality of circumstances, not just the moment of the threat.',
+      majority:['Roberts','Thomas','Alito','Sotomayor','Kagan','Gorsuch','Kavanaugh','Barrett','KBJ'],
+      dissent:[],
+      preds:{gpt:{v:'petitioner',ok:true},claude:{v:'petitioner',ok:true},gemini:{v:'petitioner',ok:true}}
+    },
+  ]
+};
+
+const METHODOLOGY_SECTIONS = [
+  { title:'1. Overview & Research Question',
+    body:`<p>This study asks a deceptively simple question: <strong>can a large language model (LLM) correctly predict how the U.S. Supreme Court will rule on a given case?</strong> We evaluate three frontier models—GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro—across the 2023–24 Supreme Court term, with retrospective analysis on the 2022–23 term as a data contamination check.</p>
+    <p>Prediction is framed at two levels: (1) the case outcome (which party wins?) and (2) justice-level votes (how will each of the nine justices vote?). Both tasks are evaluated for accuracy.</p>
+    <p>The research builds on a rich tradition of empirical legal scholarship and connects to the longstanding debate about whether Supreme Court decision-making can be modeled statistically or algorithmically.</p>`
+  },
+  { title:'2. Data Collection & Case Selection',
+    body:`<p>The dataset comprises all argued and decided cases from the 2023–24 Term (October Term 2023). Case materials fed to the models include:</p>
+    <ul>
+      <li><strong>The Question Presented</strong> — the legal question certified for review</li>
+      <li><strong>Petitioner & Respondent Briefs</strong> — full merits briefs on the question presented</li>
+      <li><strong>Amicus Curiae Briefs</strong> — selected supporting briefs from key third parties</li>
+      <li><strong>Lower Court Opinions</strong> — the circuit or state court decisions being reviewed</li>
+      <li><strong>Oral Argument Transcripts</strong> — the full transcript of argument before the Court</li>
+    </ul>
+    <p>Cases were excluded from analysis if they were dismissed as improvidently granted (DIG), resolved on jurisdictional grounds only, or produced no merits ruling. The resulting dataset contains <strong>61 cases</strong> for the 2023–24 term.</p>`
+  },
+  { title:'3. Prompting Methodology',
+    body:`<p>Each model received a standardized prompt containing the case materials described above, followed by a structured prediction request. The prompt was carefully designed to:</p>
+    <ul>
+      <li>Provide complete legal context without editorializing</li>
+      <li>Ask for a binary outcome prediction (petitioner wins / respondent wins)</li>
+      <li>Request individual justice vote predictions for all nine justices</li>
+      <li>Elicit a brief chain-of-thought legal rationale</li>
+    </ul>
+    <p>A zero-shot prompting approach was used (no few-shot examples) to avoid biasing the model toward particular legal reasoning patterns. Temperature was set to 0 for all models to ensure reproducibility.</p>
+    <code class="formula">Prompt = SystemInstruction + CaseSummary + QuestionPresented + BriefExcerpts + PredictionRequest</code>
+    <p>The same prompt template was applied consistently across all three models and both terms, enabling fair comparison.</p>`
+  },
+  { title:'4. Evaluation Metrics & Scoring',
+    body:`<p>Two primary accuracy metrics are reported:</p>
+    <ul>
+      <li><strong>Case-Level Accuracy:</strong> Proportion of cases where the model correctly predicted the winning party (petitioner or respondent).</li>
+      <li><strong>Justice-Level Accuracy:</strong> Proportion of individual justice votes correctly predicted, aggregated across all cases and all justices.</li>
+    </ul>
+    <p>Both metrics are compared against three baselines:</p>
+    <ul>
+      <li><strong>FantasySCOTUS:</strong> The crowd-forecasting platform, representing collective human prediction (83.1% case accuracy)</li>
+      <li><strong>Martin–Quinn Statistical Model:</strong> A leading quantitative model of judicial behavior (~75% case accuracy)</li>
+      <li><strong>Legal Expert Survey:</strong> Predictions from law professors and practitioners (59.1% case accuracy)</li>
+    </ul>
+    <p>Statistical significance of accuracy differences was assessed using McNemar's test for paired binary outcomes.</p>`
+  },
+  { title:'5. Data Contamination Analysis (2022–23 Term)',
+    body:`<p>A significant methodological concern with LLM evaluation on historical legal decisions is <strong>training data contamination</strong>: the models may have seen SCOTUS opinions during pre-training, artificially inflating their apparent accuracy on older cases.</p>
+    <p>To test this, we applied the same prediction protocol to the 2022–23 Term, where outcomes had been publicly available for over a year before the models' training cutoffs. The results were striking:</p>
+    <ul>
+      <li>All three models achieved <strong>approximately 91.38%</strong> case-level accuracy on 2022–23 cases</li>
+      <li>This is substantially higher than the 76–82% range observed for 2023–24 cases</li>
+      <li>The gap (~9–15 percentage points) is consistent with contamination effects</li>
+    </ul>
+    <p>These findings suggest that <strong>genuine prospective forecasting accuracy</strong> for the 2023–24 term is an accurate measure of true predictive power. The 2022–23 results should be interpreted as an upper bound inflated by memorization, not genuine prediction.</p>`
+  },
+  { title:'6. Justice-Level Analysis & Predictability',
+    body:`<p>Models did not predict all justices equally well. Across all three models, certain justices were consistently more predictable than others:</p>
+    <ul>
+      <li><strong>Most predictable:</strong> Justice Thomas (avg. 85.1% across models) and Justice Gorsuch (avg. 84.4%), likely due to their consistent originalist/textualist voting patterns</li>
+      <li><strong>Least predictable:</strong> Chief Justice Roberts (avg. 75.2%) and Justice Alito (avg. 77.0%), whose votes in close cases are less ideologically predictable</li>
+    </ul>
+    <p>This finding has theoretical implications: ideologically coherent justices with well-articulated interpretive methodologies may be more accurately modeled than institutionally minded justices who weigh coalitional and reputational concerns.</p>
+    <p>Justice-level accuracy also varied by case area. Administrative law and statutory interpretation cases showed higher accuracy than constitutional cases involving novel fact patterns.</p>`
+  },
+  { title:'7. Limitations & Future Research',
+    body:`<p>Several limitations of the current study merit acknowledgment:</p>
+    <ul>
+      <li><strong>Temporal specificity:</strong> Model training cutoffs mean that some 2023–24 term cases may still have been partially contaminated by pre-argument coverage in legal media.</li>
+      <li><strong>Binary framing:</strong> Reducing a complex decision to "petitioner wins / respondent wins" ignores the doctrinal content of opinions, which may matter as much as outcome for legal practice.</li>
+      <li><strong>Prompt sensitivity:</strong> Different prompt designs could yield different results; we tested one standardized template.</li>
+      <li><strong>Model versioning:</strong> LLMs are continuously updated; the GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro versions used here reflect snapshots in time.</li>
+    </ul>
+    <p>Future research directions include: (1) evaluation on non-U.S. apex courts; (2) reasoning-model comparison (e.g., o1/o3 vs. standard chat models); (3) fine-tuning on SCOTUS data; and (4) multi-round deliberation prompting to simulate oral argument dynamics.</p>`
+  },
+];
+
+const DL_ITEMS = [
+  { icon:'📜', title:'"LLMs as Supreme Court Super Forecasters?"', desc:'Haim, Kesari &amp; Kruse (2026). The full working paper describing methodology, results, and analysis of LLM performance on Supreme Court prediction tasks.', meta:'PDF · ~625 KB · February 2026', file:'scotus_predictions-6.pdf' },
+  { icon:'⚖️', title:'SCOTUS Dockets & Briefs', desc:'Complete collection of petitioner/respondent merits briefs, amicus briefs, and Questions Presented for all cases in the 2023–24 term dataset.', meta:'ZIP · ~480 MB · 61 cases', file:'#' },
+  { icon:'📊', title:'Justice Vote Database (CSV)', desc:'Structured dataset of all justice votes, majority/dissent alignment, and case metadata. Compatible with R, Python, and Stata.', meta:'CSV · ~2.4 MB · Spaeth-compatible', file:'#' },
+  { icon:'💬', title:'LLM Prediction Outputs', desc:'Raw JSON outputs from all three models (GPT-4o, Claude 3.5 Sonnet, Gemini 1.5 Pro) for every case, including chain-of-thought rationales.', meta:'JSON · ~38 MB · All 3 models', file:'#' },
+  { icon:'📋', title:'Oral Argument Transcripts', desc:'Full transcripts of Supreme Court oral arguments for all cases in the dataset, formatted for NLP analysis.', meta:'TXT · ~95 MB · 2023–24 Term', file:'#' },
+  { icon:'🔬', title:'Replication Code (GitHub)', desc:'Python notebooks for reproducing all tables and figures in the working paper, including prompt construction and evaluation pipelines.', meta:'GitHub Repository · Python 3.10+', file:'https://github.com' },
+];
+
+const ABOUT_ITEMS = [
+  { avatar:'⚖️', name:'Amit Haim', role:'Tel Aviv University · Corresponding Author',
+    bio:'Research at the intersection of empirical legal studies, judicial behavior, and artificial intelligence. Amit leads the project\'s legal analysis and is the corresponding author for all inquiries regarding this work.',
+    links:[{label:'Email',href:'mailto:amithaim@tauex.tau.ac.il'},{label:'TAU Profile',href:'https://en-law.tau.ac.il'},{label:'SSRN',href:'https://ssrn.com'}]
+  },
+  { avatar:'🧠', name:'Aniket Kesari', role:'Fordham University School of Law',
+    bio:'Specializes in data law, privacy, and empirical approaches to legal questions. Aniket contributes expertise in quantitative methods, machine learning evaluation, and the regulatory dimensions of AI in legal systems.',
+    links:[{label:'Faculty Page',href:'https://law.fordham.edu'},{label:'Google Scholar',href:'https://scholar.google.com'},{label:'SSRN',href:'https://ssrn.com'}]
+  },
+  { avatar:'📚', name:'Johannes Kruse', role:'Max Planck Institute for the Study of Crime, Security and Law · Bonn',
+    bio:'Researcher in computational law and comparative legal systems at the Max Planck Institute in Bonn. Johannes leads the model evaluation pipeline, RAG implementation, and replication infrastructure for this project.',
+    links:[{label:'MPI Profile',href:'https://csl.mpg.de'},{label:'Google Scholar',href:'https://scholar.google.com'}]
+  },
+];
+
+const COMPETE_CASES = [
+  { id:'c1', name:'Mahmoud v. McKnight', cite:'No. 23-1522', issue:'Whether a public school can require students to attend lessons with LGBTQ-inclusive material over parental religious objection.' },
+  { id:'c2', name:'United States v. Skrmetti', cite:'No. 23-477', issue:'Whether Tennessee\'s law restricting gender-affirming medical care for minors violates the Equal Protection Clause.' },
+  { id:'c3', name:'Food & Drug Admin. v. Wages & White Lion', cite:'No. 23-1038', issue:'Whether the FDA acted arbitrarily in denying marketing authorization for certain e-cigarette products.' },
+  { id:'c4', name:'Cunningham v. Cornell University', cite:'No. 23-1007', issue:'Whether ERISA plaintiffs must plead facts showing that a plan\'s investment options were imprudent as offered.' },
+  { id:'c5', name:'Lackey v. Stinnie', cite:'No. 23-621', issue:'Whether a plaintiff who obtains a preliminary injunction is a "prevailing party" entitled to attorneys\' fees if the case becomes moot before final judgment.' },
+];
+
+// ── SVG PORTRAIT GENERATOR ───────────────────────────────────
+
+function makePortrait(j) {
+  const s = j.hair.s, hc = j.hair.c, sk = j.skin;
+  let hairSVG = '', glassesSVG = '';
+
+  if (s === 'swept-silver') {
+    hairSVG = `<path d="M63,100 Q76,62 100,59 Q124,62 137,100 L140,158 Q135,165 130,168" fill="${hc}" stroke="#909090" stroke-width=".5"/>
+      <path d="M63,100 Q57,132 60,162 Q63,168 70,170" fill="${hc}" stroke="#909090" stroke-width=".5"/>
+      <path d="M84,60 L86,92" fill="none" stroke="#909090" stroke-width=".8" opacity=".5"/>`;
+  } else if (s === 'cropped-dark') {
+    hairSVG = `<path d="M64,102 Q78,72 100,70 Q122,72 136,102" fill="${hc}"/>`;
+  } else if (s === 'swept-white') {
+    hairSVG = `<path d="M60,108 Q70,65 100,60 Q130,65 140,108 L142,150" fill="${hc}" stroke="#ccc" stroke-width=".5"/>
+      <path d="M60,108 Q55,135 58,155" fill="${hc}" stroke="#ccc" stroke-width=".5"/>`;
+  } else if (s === 'shoulder-dark') {
+    hairSVG = `<path d="M55,104 Q68,60 100,56 Q132,60 145,104 L150,195 Q138,210 128,212" fill="${hc}"/>
+      <path d="M55,104 Q48,140 50,195 Q54,210 70,215" fill="${hc}"/>`;
+  } else if (s === 'short-dark') {
+    hairSVG = `<path d="M62,104 Q75,66 100,63 Q125,66 138,104" fill="${hc}"/>
+      <path d="M62,104 Q58,125 60,145" fill="${hc}"/>
+      <path d="M138,104 Q142,125 140,145" fill="${hc}"/>`;
+  } else if (s === 'wavy-brown') {
+    hairSVG = `<path d="M64,100 Q76,58 100,56 Q124,58 136,100 L139,150 Q135,160 132,165" fill="${hc}" stroke="#4a2a10" stroke-width=".5"/>
+      <path d="M64,100 Q58,128 60,155 Q62,162 68,165" fill="${hc}" stroke="#4a2a10" stroke-width=".5"/>
+      <path d="M72,62 Q76,56 80,62 Q84,56 88,62" fill="none" stroke="#4a2a10" stroke-width="1.2"/>
+      <path d="M100,58 Q104,52 108,58 Q112,52 116,58 Q120,64 124,58" fill="none" stroke="#4a2a10" stroke-width="1.2"/>`;
+  } else if (s === 'parted-brown') {
+    hairSVG = `<path d="M65,102 Q78,64 100,61 Q122,64 135,102 L137,148 Q133,158 130,162" fill="${hc}" stroke="#3a2010" stroke-width=".5"/>
+      <path d="M65,102 Q59,130 62,152 Q64,160 70,162" fill="${hc}" stroke="#3a2010" stroke-width=".5"/>
+      <path d="M98,62 L100,100" fill="none" stroke="#3a2010" stroke-width=".9" opacity=".6"/>`;
+  } else if (s === 'long-wavy') {
+    hairSVG = `<path d="M58,106 Q70,62 100,58 Q130,62 142,106 L148,200 Q140,215 130,218" fill="${hc}" stroke="#1a0800" stroke-width=".5"/>
+      <path d="M58,106 Q50,148 52,200 Q56,215 70,218" fill="${hc}" stroke="#1a0800" stroke-width=".5"/>
+      <path d="M62,130 Q58,145 63,155" fill="none" stroke="#1a0800" stroke-width="1" opacity=".5"/>
+      <path d="M138,130 Q142,145 137,155" fill="none" stroke="#1a0800" stroke-width="1" opacity=".5"/>`;
+  } else if (s === 'locs') {
+    hairSVG = `
+      <path d="M60,105 Q72,60 100,56 Q128,60 140,105 L142,158 Q138,165 134,168" fill="${hc}"/>
+      <path d="M60,105 Q54,138 56,162 Q58,168 66,170" fill="${hc}"/>
+      <g stroke="#3a1500" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".7">
+        <path d="M72,66 Q69,80 72,92"/><path d="M80,60 Q77,76 80,90"/>
+        <path d="M88,57 Q86,72 88,87"/><path d="M96,56 Q94,71 96,86"/>
+        <path d="M104,56 Q102,71 104,86"/><path d="M112,57 Q110,72 112,88"/>
+        <path d="M120,60 Q118,76 120,90"/><path d="M128,66 Q126,80 128,92"/>
+        <path d="M60,115 Q55,132 58,148"/><path d="M140,115 Q145,132 142,148"/>
+      </g>`;
+  }
+
+  if (j.glasses) {
+    if (j.glassType === 'rect') {
+      glassesSVG = `<rect x="72" y="108" width="23" height="14" rx="2.5" fill="none" stroke="#1a0e00" stroke-width="2"/>
+        <rect x="105" y="108" width="23" height="14" rx="2.5" fill="none" stroke="#1a0e00" stroke-width="2"/>
+        <line x1="95" y1="115" x2="105" y2="115" stroke="#1a0e00" stroke-width="1.8"/>
+        <line x1="49" y1="113" x2="72" y2="113" stroke="#1a0e00" stroke-width="1.8"/>
+        <line x1="128" y1="113" x2="149" y2="113" stroke="#1a0e00" stroke-width="1.8"/>`;
+    } else if (j.glassType === 'semi') {
+      glassesSVG = `<path d="M72,112 Q83.5,105 95,112" fill="none" stroke="#1a0e00" stroke-width="2"/>
+        <path d="M105,112 Q116.5,105 128,112" fill="none" stroke="#1a0e00" stroke-width="2"/>
+        <line x1="95" y1="112" x2="105" y2="112" stroke="#1a0e00" stroke-width="1.8"/>
+        <line x1="49" y1="110" x2="72" y2="110" stroke="#1a0e00" stroke-width="1.8"/>
+        <line x1="128" y1="110" x2="149" y2="110" stroke="#1a0e00" stroke-width="1.8"/>`;
+    } else if (j.glassType === 'wire') {
+      glassesSVG = `<ellipse cx="84" cy="114" rx="13" ry="8" fill="none" stroke="#8b6914" stroke-width="1.5"/>
+        <ellipse cx="116" cy="114" rx="13" ry="8" fill="none" stroke="#8b6914" stroke-width="1.5"/>
+        <line x1="97" y1="114" x2="103" y2="114" stroke="#8b6914" stroke-width="1.5"/>
+        <line x1="48" y1="112" x2="71" y2="112" stroke="#8b6914" stroke-width="1.5"/>
+        <line x1="129" y1="112" x2="150" y2="112" stroke="#8b6914" stroke-width="1.5"/>`;
+    }
+  }
+
+  return `<svg viewBox="0 0 200 215" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Portrait of ${j.name}">
+  <defs><clipPath id="ov-${j.id}"><ellipse cx="100" cy="112" rx="84" ry="100"/></clipPath></defs>
+  <ellipse cx="103" cy="115" rx="84" ry="100" fill="rgba(0,0,0,.22)"/>
+  <ellipse cx="100" cy="112" rx="84" ry="100" fill="#f5e6c8" stroke="#c9a84c" stroke-width="3.5"/>
+  <ellipse cx="100" cy="112" rx="79" ry="95" fill="none" stroke="#c9a84c" stroke-width=".9" stroke-dasharray="4,3" opacity=".6"/>
+  <g clip-path="url(#ov-${j.id})">
+    <rect x="0" y="175" width="200" height="60" fill="#0a0a1e"/>
+    <polygon points="82,174 100,192 118,174 110,162 90,162" fill="white" stroke="#ccc" stroke-width=".5"/>
+    <rect x="88" y="152" width="24" height="26" rx="4" fill="${sk}"/>
+    ${hairSVG}
+    <ellipse cx="100" cy="115" rx="42" ry="50" fill="${sk}" stroke="rgba(0,0,0,.08)" stroke-width=".5"/>
+    <path d="M74,105 Q83,101 92,104" fill="none" stroke="#5a3a28" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M108,104 Q117,101 126,105" fill="none" stroke="#5a3a28" stroke-width="1.6" stroke-linecap="round"/>
+    <ellipse cx="84" cy="113" rx="8" ry="5.5" fill="white" stroke="#2c1810" stroke-width=".9"/>
+    <ellipse cx="116" cy="113" rx="8" ry="5.5" fill="white" stroke="#2c1810" stroke-width=".9"/>
+    <circle cx="84" cy="113" r="3.5" fill="#2a2860"/>
+    <circle cx="116" cy="113" r="3.5" fill="#2a2860"/>
+    <circle cx="85.4" cy="111.5" r="1.2" fill="white" opacity=".85"/>
+    <circle cx="117.4" cy="111.5" r="1.2" fill="white" opacity=".85"/>
+    ${glassesSVG}
+    <path d="M100,120 Q96,128 99,133 Q100.5,134.5 102,133 Q105,128 100,120" fill="${sk}" stroke="rgba(0,0,0,.12)" stroke-width=".5"/>
+    <path d="M88,140 Q100,146 112,140" fill="none" stroke="#8b5040" stroke-width="1.7" stroke-linecap="round"/>
+  </g>
+  <ellipse cx="100" cy="112" rx="84" ry="100" fill="none" stroke="#c9a84c" stroke-width="3.5"/>
+  <rect x="8" y="200" width="184" height="13" rx="3" fill="#1a2744" stroke="#c9a84c" stroke-width="1.2"/>
+  <text x="100" y="209.5" font-family="Cinzel,serif" font-size="7.5" fill="#c9a84c" text-anchor="middle" font-weight="600">${j.name.toUpperCase()}</text>
+</svg>`;
+}
+
+// ── RENDER JUSTICES ──────────────────────────────────────────
+
+function renderJustices() {
+  const g = document.getElementById('justices-grid');
+  JUSTICES.forEach(j => {
+    const pct = Math.round((j.ideo + 1) / 2 * 100);
+    const card = document.createElement('div');
+    card.className = 'jcard fade-up';
+    card.dataset.id = j.id;
+    card.innerHTML = `
+      ${makePortrait(j)}
+      <div class="jname">${j.name}</div>
+      <div class="jtitle">${j.title}</div>
+      <div class="jappt">Appt. ${j.appt}</div>
+      <div class="ideo-bar"><div class="ideo-dot" style="left:${pct}%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:.6rem;color:#5a7090;margin-bottom:.5rem"><span>Liberal</span><span>Conservative</span></div>
+      <div class="jacc">
+        <div class="acc-row"><span class="acc-model">GPT-4o</span><div class="acc-track"><div class="acc-fill gpt" data-w="${j.acc.gpt}"></div></div><span class="acc-pct">${j.acc.gpt}%</span></div>
+        <div class="acc-row"><span class="acc-model">Claude</span><div class="acc-track"><div class="acc-fill claude" data-w="${j.acc.claude}"></div></div><span class="acc-pct">${j.acc.claude}%</span></div>
+        <div class="acc-row"><span class="acc-model">Gemini</span><div class="acc-track"><div class="acc-fill gemini" data-w="${j.acc.gemini}"></div></div><span class="acc-pct">${j.acc.gemini}%</span></div>
+      </div>`;
+    card.addEventListener('click', () => openJusticeModal(j));
+    g.appendChild(card);
+  });
+}
+
+function openJusticeModal(j) {
+  const b = document.getElementById('modal-justice-body');
+  const avg = ((j.acc.gpt + j.acc.claude + j.acc.gemini) / 3).toFixed(1);
+  b.innerHTML = `
+    <div style="display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap">
+      <div style="flex-shrink:0">${makePortrait(j).replace('width: 140px','').replace('width="140"','width="120"')}</div>
+      <div style="flex:1;min-width:200px;text-align:left">
+        <h2 style="font-family:'Cinzel',serif;font-size:1rem;color:var(--navy)">${j.name}</h2>
+        <p style="font-size:.78rem;color:var(--gold);font-style:italic;margin:.2rem 0">${j.title} · Appt. ${j.appt}</p>
+        <p style="font-size:.82rem;color:var(--ink-lt);margin:.75rem 0;line-height:1.75">${j.bio}</p>
+        <p style="font-family:'Cinzel',serif;font-size:.72rem;color:var(--navy);margin-bottom:.4rem">Notable Cases:</p>
+        <ul style="font-size:.78rem;color:var(--ink-lt);padding-left:1rem">${j.famousCases.map(c=>`<li>${c}</li>`).join('')}</ul>
+        <div style="margin-top:1rem;padding:.85rem;background:rgba(26,39,68,.06);border-radius:4px;border:1px solid var(--border)">
+          <p style="font-family:'Cinzel',serif;font-size:.72rem;color:var(--navy);margin-bottom:.5rem">AI Prediction Accuracy (Justice-Level)</p>
+          <p style="font-size:.8rem">GPT-4o: <strong>${j.acc.gpt}%</strong> · Claude: <strong>${j.acc.claude}%</strong> · Gemini: <strong>${j.acc.gemini}%</strong></p>
+          <p style="font-size:.78rem;color:var(--ink-lt);margin-top:.3rem">Average across models: <strong style="color:var(--red)">${avg}%</strong></p>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('modal-justice').classList.add('open');
+}
+
+// ── RENDER CASES ─────────────────────────────────────────────
+
+function renderCases(term) {
+  const container = document.getElementById('cases-container');
+  container.innerHTML = '';
+  const cases = TERMS[term];
+  const grid = document.createElement('div');
+  grid.className = 'cases-grid';
+  cases.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'ccase';
+    const preds = ['gpt','claude','gemini'].map(m => {
+      const p = c.preds[m];
+      const cls = c.outcome === 'vacated' ? 'pend' : (p.ok ? 'ok' : 'bad');
+      const icon = c.outcome === 'vacated' ? '~' : (p.ok ? '✓' : '✗');
+      const label = m === 'gpt' ? 'GPT-4o' : m === 'claude' ? 'Claude 3.5' : 'Gemini 1.5';
+      return `<span class="pill ${cls}">${icon} ${label}: ${p.v === 'petitioner' ? 'Petitioner' : 'Respondent'}</span>`;
+    }).join('');
+    const maj = c.majority.map(n => `<span class="vc maj">✓ ${n}</span>`).join('');
+    const dis = c.dissent.map(n => `<span class="vc dis">✗ ${n}</span>`).join('');
+    const badgeCls = c.outcome === 'vacated' ? 'pending' : '';
+    el.innerHTML = `
+      <div class="cc-head">
+        <div><div class="cc-name">${c.name}</div><div class="cc-cite">${c.cite} · ${c.area}</div></div>
+        <div class="cc-badge ${badgeCls}">${c.decision} ${c.outcome === 'petitioner' ? '· Pet. Wins' : c.outcome === 'respondent' ? '· Resp. Wins' : '· Vacated'}</div>
+      </div>
+      <div class="cc-body">
+        <div class="cc-issue">${c.issue}</div>
+        <div class="pred-row"><span class="pred-lbl">LLM Predictions:</span>${preds}</div>
+        ${c.result ? `<p style="font-size:.8rem;color:var(--ink-lt);margin-bottom:.5rem"><strong>Holding:</strong> <em>${c.result}</em></p>` : ''}
+        <div class="votes">${maj}${dis}</div>
+      </div>`;
+    grid.appendChild(el);
+  });
+  container.appendChild(grid);
+}
+
+// ── RENDER BAR CHART ─────────────────────────────────────────
+
+function renderBarChart() {
+  const models = [
+    { key:'gpt', label:'GPT-4o', color:'#10a37f' },
+    { key:'claude', label:'Claude 3.5', color:'#c07640' },
+    { key:'gemini', label:'Gemini 1.5', color:'#4285f4' },
+  ];
+  const sorted = [...JUSTICES].sort((a,b) => b.acc.claude - a.acc.claude);
+  const c = document.getElementById('bar-chart-container');
+  models.forEach(m => {
+    const div = document.createElement('div');
+    div.innerHTML = `<p style="font-family:'Cinzel',serif;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#666;margin-bottom:.5rem;margin-top:1rem">${m.label}</p>`;
+    const chart = document.createElement('div');
+    chart.className = 'bar-chart';
+    sorted.forEach(j => {
+      const v = j.acc[m.key];
+      const row = document.createElement('div');
+      row.className = 'bar-row';
+      row.innerHTML = `<span class="bar-lbl">${j.name.split(' ').slice(-2).join(' ')}</span>
+        <div class="bar-track"><div class="bar-fill" data-w="${v}" style="background:${m.color}"></div></div>
+        <span class="bar-pct">${v}%</span>`;
+      chart.appendChild(row);
+    });
+    div.appendChild(chart);
+    c.appendChild(div);
+  });
+}
+
+// ── RENDER METHODOLOGY ───────────────────────────────────────
+
+function renderMethodology() {
+  const acc = document.getElementById('methodology-accordion');
+  METHODOLOGY_SECTIONS.forEach((s,i) => {
+    const item = document.createElement('div');
+    item.className = 'ai';
+    item.innerHTML = `<button class="at" data-idx="${i}">${s.title}<span class="ic">▼</span></button>
+      <div class="ac">${s.body}</div>`;
+    acc.appendChild(item);
+    const btn = item.querySelector('.at');
+    const content = item.querySelector('.ac');
+    btn.addEventListener('click', () => {
+      const isOpen = btn.classList.contains('open');
+      document.querySelectorAll('.at.open').forEach(b => { b.classList.remove('open'); b.nextElementSibling.classList.remove('open'); });
+      if (!isOpen) { btn.classList.add('open'); content.classList.add('open'); }
+    });
+  });
+}
+
+// ── RENDER DOWNLOADS ─────────────────────────────────────────
+
+function renderDownloads() {
+  const g = document.getElementById('dl-grid');
+  DL_ITEMS.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'dlcard fade-up';
+    el.innerHTML = `<div class="dl-icon">${d.icon}</div>
+      <div class="dl-title">${d.title}</div>
+      <div class="dl-desc">${d.desc}</div>
+      <div class="dl-meta">${d.meta}</div>
+      <a href="${d.file}" class="btn-dl" ${d.file==='#'?'onclick="return showComingSoon()"':''}>⬇ Download</a>`;
+    g.appendChild(el);
+  });
+}
+function showComingSoon() {
+  showToast('📜 This dataset will be available upon paper acceptance.');
+  return false;
+}
+
+// ── RENDER ABOUT ─────────────────────────────────────────────
+
+function renderAbout() {
+  const g = document.getElementById('about-grid');
+  ABOUT_ITEMS.forEach(a => {
+    const el = document.createElement('div');
+    el.className = 'acard fade-up';
+    el.innerHTML = `<div class="aavatar">${a.avatar}</div>
+      <div class="aname">${a.name}</div>
+      <div class="arole">${a.role}</div>
+      <div class="abio">${a.bio}</div>
+      <div class="alinks">${a.links.map(l=>`<a href="${l.href}" class="alink">${l.label}</a>`).join('')}</div>`;
+    g.appendChild(el);
+  });
+}
+
+// ── RENDER COMPETITION ───────────────────────────────────────
+
+function renderCompetition() {
+  const c = document.getElementById('pred-cases-container');
+  COMPETE_CASES.forEach(cs => {
+    const div = document.createElement('div');
+    div.className = 'cpblock';
+    div.innerHTML = `<div class="cpname">${cs.name} <span style="font-size:.65rem;color:#5a7090">${cs.cite}</span></div>
+      <p style="font-size:.72rem;color:#8090a8;margin-bottom:.6rem;line-height:1.6">${cs.issue}</p>
+      <div class="cpbtns">
+        <button type="button" class="cpbtn" data-case="${cs.id}" data-val="petitioner" onclick="selectPred(this)">Petitioner Wins</button>
+        <button type="button" class="cpbtn" data-case="${cs.id}" data-val="respondent" onclick="selectPred(this)">Respondent Wins</button>
+        <button type="button" class="cpbtn" data-case="${cs.id}" data-val="unclear" onclick="selectPred(this)">Too Close to Call</button>
+      </div>`;
+    c.appendChild(div);
+  });
+  renderLeaderboard();
+}
+
+const predictions = {};
+function selectPred(btn) {
+  const caseId = btn.dataset.case;
+  const val = btn.dataset.val;
+  btn.closest('.cpbtns').querySelectorAll('.cpbtn').forEach(b => { b.classList.remove('sel-p','sel-r'); });
+  btn.classList.add(val === 'petitioner' ? 'sel-p' : 'sel-r');
+  predictions[caseId] = val;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('predict-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('pred-name').value.trim();
+    if (!name) return;
+    if (Object.keys(predictions).length < 3) { showToast('⚖️ Please predict at least 3 cases!'); return; }
+    const entries = JSON.parse(localStorage.getItem('oracle-entries') || '[]');
+    entries.push({ name, inst: document.getElementById('pred-inst').value.trim(), preds: {...predictions}, ts: Date.now(), score: 0 });
+    localStorage.setItem('oracle-entries', JSON.stringify(entries));
+    showToast(`✅ Predictions registered, ${name}! May the law be with you.`);
+    renderLeaderboard();
+    awardPoints(25, '🗳️', 'Prediction Submitted!', `Your predictions have been entered into the Official Record. ${name}, may your legal instincts prove as sharp as a quill!`, '+25 Oracle Points');
+  });
+});
+
+function renderLeaderboard() {
+  const lb = document.getElementById('leaderboard');
+  const entries = JSON.parse(localStorage.getItem('oracle-entries') || '[]');
+  if (!entries.length) { lb.innerHTML = '<p class="lb-empty">No predictions yet. Be the first to enter the record!</p>'; return; }
+  const sorted = entries.sort((a,b) => b.score - a.score || b.ts - a.ts).slice(0,10);
+  lb.innerHTML = sorted.map((e,i) => {
+    const rc = i===0?'r1':i===1?'r2':i===2?'r3':'';
+    const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+    return `<div class="lb-row"><span class="lb-rnk ${rc}">${medal||i+1}</span><span class="lb-nm">${e.name}${e.inst?` <span style="font-size:.7rem;color:#5a7090">· ${e.inst}</span>`:''}</span><span class="lb-sc">${e.score} pts</span></div>`;
+  }).join('');
+}
+
+// ── TABS ─────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.ttab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.ttab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderCases(tab.dataset.term);
+    });
+  });
+});
+
+// ── MODALS ───────────────────────────────────────────────────
+
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.moverlay.open').forEach(m => m.classList.remove('open')); });
+document.querySelectorAll('.moverlay').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
+
+// ── TOAST ────────────────────────────────────────────────────
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._to); t._to = setTimeout(() => t.classList.remove('show'), 3800);
+}
+
+// ── ORACLE POINTS ────────────────────────────────────────────
+
+let oraclePts = parseInt(localStorage.getItem('oracle-pts') || '0');
+const foundEggs = new Set(JSON.parse(localStorage.getItem('oracle-eggs') || '[]'));
+
+function updatePtsDisplay() {
+  document.getElementById('pts-val').textContent = oraclePts;
+}
+function awardPoints(pts, icon, title, body, ptsLabel, eggKey) {
+  if (eggKey && foundEggs.has(eggKey)) { showToast(`🏛 Already found: ${title}`); return; }
+  if (eggKey) { foundEggs.add(eggKey); localStorage.setItem('oracle-eggs', JSON.stringify([...foundEggs])); }
+  oraclePts += pts;
+  localStorage.setItem('oracle-pts', oraclePts);
+  updatePtsDisplay();
+  document.getElementById('modal-icon').textContent = icon;
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').textContent = body;
+  document.getElementById('modal-pts').textContent = ptsLabel || `+${pts} Oracle Points`;
+  document.getElementById('modal-ee').classList.add('open');
+}
+
+// ── SCROLL ANIMATIONS ─────────────────────────────────────────
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); e.target.querySelectorAll('.bar-fill,[data-w]').forEach(b => { if (b.dataset.w) b.style.width = b.dataset.w + '%'; }); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// ── ACTIVE NAV ───────────────────────────────────────────────
+
+const sections = ['hero','justices','predictions','methodology','data','compete','about'];
+window.addEventListener('scroll', () => {
+  let cur = 'hero';
+  sections.forEach(id => { const el = document.getElementById(id); if (el && window.scrollY >= el.offsetTop - 120) cur = id; });
+  document.querySelectorAll('.nav-link').forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#'+cur); });
+});
+
+// ── EASTER EGGS ──────────────────────────────────────────────
+
+// EE1: Konami Code → Supreme Seer Mode
+const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let konamiIdx = 0;
+document.addEventListener('keydown', e => {
+  if (e.key === KONAMI[konamiIdx]) { konamiIdx++; if (konamiIdx === KONAMI.length) { konamiIdx = 0; activateKonami(); } } else konamiIdx = 0;
+});
+function activateKonami() {
+  document.body.classList.add('seer-mode');
+  awardPoints(100, '🔮', 'Supreme Seer Mode Unlocked!',
+    '"The oracle who knows all, predicts all, and fears no certiorari." — The Konami Clause, Article ↑↑↓↓←→←→BA. You have mastered the secret constitutional code of the Justices.',
+    '+100 Oracle Points', 'konami');
+}
+
+// EE2: Type HAMILTON
+let hamiltonBuf = '';
+const hamiltonTarget = 'HAMILTON';
+document.addEventListener('keydown', e => {
+  if (e.key.length === 1) {
+    hamiltonBuf = (hamiltonBuf + e.key.toUpperCase()).slice(-hamiltonTarget.length);
+    if (hamiltonBuf === hamiltonTarget) {
+      awardPoints(50, '🎭', 'The Room Where It Happens',
+        '"The law is whatever is boldly asserted and plausibly maintained." — Alexander Hamilton\n\nYou have channeled the spirit of the first Treasury Secretary and Founding Jurist. Hamilton would have marveled at the art of algorithmic prediction.',
+        '+50 Oracle Points', 'hamilton');
+    }
+  }
+});
+
+// EE3: Type MADISON
+let madisonBuf = '';
+document.addEventListener('keydown', e => {
+  if (e.key.length === 1) {
+    madisonBuf = (madisonBuf + e.key.toUpperCase()).slice(-7);
+    if (madisonBuf === 'MADISON') {
+      awardPoints(50, '📜', 'Father of the Constitution',
+        '"If men were angels, no government would be necessary. If angels were to govern men, neither external nor internal controls on government would be necessary." — James Madison, Federalist No. 51\n\nYou found the source code secret, architect of the Republic!',
+        '+50 Oracle Points', 'madison');
+    }
+  }
+});
+
+// EE4: Quill button — click 3 times
+let quillClicks = 0;
+document.getElementById('quill-btn').addEventListener('click', () => {
+  quillClicks++;
+  if (quillClicks === 3) {
+    quillClicks = 0;
+    awardPoints(35, '🪶', 'The Pen is Mightier',
+      '"The pen is mightier than the sword — and the algorithm mightier still. In the year 2024, the quill was replaced by the transformer, and the Court\'s judgments laid bare by 81.97% accuracy." — The Oracle\'s Codex',
+      '+35 Oracle Points', 'quill');
+  } else {
+    showToast(`🪶 The quill stirs… (${3 - quillClicks} more click${3-quillClicks===1?'':'s'})`);
+  }
+});
+
+// EE5: Eagle — click 5 times
+let eagleClicks = 0;
+document.getElementById('f-eagle').addEventListener('click', () => {
+  eagleClicks++;
+  if (eagleClicks === 5) {
+    eagleClicks = 0;
+    awardPoints(40, '🦅', 'E Pluribus Unum',
+      '"From many models, one forecast. GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro together achieved an ensemble accuracy exceeding any single model — much as the Union is stronger than its parts." — Oracle Seal Secret',
+      '+40 Oracle Points', 'eagle');
+  } else {
+    showToast(`🦅 The eagle stirs… (${5 - eagleClicks} more)`);
+  }
+});
+
+// EE6: Double-click the title → Preamble
+document.getElementById('hero-title').addEventListener('dblclick', () => {
+  awardPoints(30, '📋', 'We the People',
+    '"We the People of the United States, in Order to form a more perfect Union, establish Justice, insure domestic Tranquility, provide for the common defence, promote the general Welfare, and secure the Blessings of Liberty to ourselves and our Posterity, do ordain and establish this Constitution for the United States of America."\n\nYou have recited the Preamble. +30 Oracle Points.',
+    '+30 Oracle Points', 'preamble');
+});
+
+// EE7: Type ORIGINALISM
+let origBuf = '';
+document.addEventListener('keydown', e => {
+  if (e.key.length === 1) {
+    origBuf = (origBuf + e.key.toUpperCase()).slice(-11);
+    if (origBuf === 'ORIGINALISM') {
+      awardPoints(45, '⚖️', 'Originalist!',
+        '"The Constitution means what it meant when it was written — and our model predicts that Justice Thomas agrees with this 86.78% of the time." — Oracle\'s Jurisprudential Note\n\nFun fact: Thomas was the most accurately predicted justice by both Claude and Gemini, perhaps because his consistent originalism makes his votes the most foreseeable.',
+        '+45 Oracle Points', 'originalism');
+    }
+  }
+});
+
+// EE8: Idle on the page for 60 seconds
+setTimeout(() => {
+  if (!foundEggs.has('idle')) {
+    awardPoints(20, '⏳', 'Patience of a Justice',
+      '"The wheels of justice turn slowly, but they turn. You have waited 60 seconds — the approximate time it takes the Court to grant certiorari on a case it has already decided to deny." — Clerk\'s Observation',
+      '+20 Oracle Points', 'idle');
+  }
+}, 60000);
+
+// ── INIT ─────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', () => {
+  updatePtsDisplay();
+  renderJustices();
+  renderCases('2023-24');
+  renderBarChart();
+  renderMethodology();
+  renderDownloads();
+  renderAbout();
+  renderCompetition();
+
+  // Re-observe dynamically added elements
+  setTimeout(() => {
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  }, 100);
+});
+</script>
+</body>
+</html>

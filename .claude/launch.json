@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "SCOTUS Website (Static)",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "3000", "--directory", "G:/My Drive/Work/Working Papers/scotus_prediction"],
+      "port": 3000
+    },
+    {
+      "name": "Jupyter Notebook (Analysis)",
+      "runtimeExecutable": "jupyter",
+      "runtimeArgs": ["notebook", "G:/My Drive/Work/Working Papers/scotus_prediction/scripts/calculate_results.ipynb", "--port", "8888", "--no-browser"],
+      "port": 8888
+    }
+  ]
+}
