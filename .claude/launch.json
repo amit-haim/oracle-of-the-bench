@@ -13,5 +13,9 @@
       "runtimeArgs": ["notebook", "G:/My Drive/Work/Working Papers/scotus_prediction/scripts/calculate_results.ipynb", "--port", "8888", "--no-browser"],
       "port": 8888
     }
-  ]
+  ],
+  "_meta": {
+    "github": "https://github.com/amit-haim/oracle-of-the-bench",
+    "live": "https://amit-haim.github.io/oracle-of-the-bench/"
+  }
 }
